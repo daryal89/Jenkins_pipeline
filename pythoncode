@@ -1,0 +1,33 @@
+import requests, json
+
+def get_ut_numbers_list():
+    list = ["360625","130569"]
+    return list
+
+def add_item(numbers_list,add_Value):
+   numbers_list.append(add_Value)
+   return numbers_list
+
+def get_list_of_numbers():
+    try:
+
+       numbers_list=get_ut_numbers_list();
+
+       for numers in numbers_list:
+
+        response = requests.get('https://api.open-meteo.com/v1/'+numers)
+ 
+       if response.status_code==200:
+
+            json_array = json.loads(response.text)
+
+       for item in  json_array:
+          add_item(numbers_list,json_array["timezone"])
+          print("Time Zone = :"+ json_array["timezone"])
+       else:
+           print("Process done.!")
+    except:
+     print("Something else went wrong")
+
+
+get_list_of_numbers()
